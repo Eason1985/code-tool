@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.mapper.tbSysrRole.TbSysrRoleMapper">
+
+
+	<select id="selectConfigTRoleByUserId" parameterType="java.util.HashMap"
+		resultType="com.web.entity.TbSysrRoleDto">
+	<![CDATA[	
+		SELECT * FROM TB_SYSR_ROLE 
+		AS t JOIN  ( SELECT SYSR_ROLE_ID FROM TB_SYSR_ROLE WHERE SYSR_ROLE_ID = any(select ur.sysr_role_id from tb_sysr_relation_user_role ur 
+					  	where ur.sysr_user_id =  #{sysr_user_id,jdbcType=VARCHAR}) ORDER BY SYSR_ROLE_ID DESC LIMIT #{minSize}, #{maxSize})
+ 		AS temp WHERE 1=1 AND t.SYSR_ROLE_ID= temp.SYSR_ROLE_ID AND 1=1  
+                     ORDER BY t.SYSR_ROLE_ID 
+	   ]]>
+	</select>
+
+	<select id="selectCountConfigTRoleByUserId" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(1)
+		FROM TB_SYSR_ROLE r
+		WHERE 1=1
+<!-- 		and r.NETNO = #{netno} AND 
+                    t.netno=#{netno} -->
+		and exists (
+		select 1 from tb_sysr_relation_user_role ur
+		where ur.sysr_user_id = #{sysr_user_id,jdbcType=VARCHAR}
+		and ur.sysr_role_id = r.sysr_role_id
+		)
+	</select>
+
+
+	<select id="selectNoConfigTRoleByUserId" parameterType="java.util.HashMap"
+		resultType="com.web.entity.TbSysrRoleDto">
+	   <![CDATA[	
+	    SELECT * FROM TB_SYSR_ROLE AS r JOIN 
+	    			(
+				      SELECT  SYSR_ROLE_ID 
+				      FROM TB_SYSR_ROLE ORDER BY SYSR_ROLE_ID DESC 
+					  LIMIT #{minSize}, #{maxSize}) AS TEMP
+					  WHERE 1=1 
+					  and r.SYSR_ROLE_ID= temp.SYSR_ROLE_ID 
+					 
+					  ]]> <!-- and r.NETNO = #{netno} -->
+		<if test="role_name != null and role_name !=''">
+			AND r.role_name = #{role_name}
+		</if>
+		<if test="role_group != null and role_group !=''">
+			AND r.role_group = #{role_group}
+		</if>
+				<![CDATA[	  
+						and not exists (
+						  	 select 1 from tb_sysr_relation_user_role ur 
+						  	 where ur.sysr_user_id =  #{sysr_user_id}
+				             and ur.sysr_role_id = r.sysr_role_id
+				    	)  order by r.sysr_role_id
+	    ]]>
+	</select>
+
+
+	<select id="selectCountNoConfigTRoleByUserId" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		<![CDATA[	
+			      SELECT  count(1)
+				      FROM TB_SYSR_ROLE r  
+					  WHERE 1=1 
+					  ]]> <!-- and r.NETNO = #{netno} -->
+		<if test="role_name != null and role_name !=''">
+			AND r.role_name = #{role_name}
+		</if>
+		<if test="role_group != null and role_group !=''">
+			AND r.role_group = #{role_group}
+		</if>
+			<![CDATA[		  and not exists (
+					  	 select 1 from tb_sysr_relation_user_role ur 
+					  	 where ur.sysr_user_id =  #{sysr_user_id} 
+			             and ur.sysr_role_id = r.sysr_role_id
+			    ) 
+		]]>
+	</select>
+
+
+
+</mapper>

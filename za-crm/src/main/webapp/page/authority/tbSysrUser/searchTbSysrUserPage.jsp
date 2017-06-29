@@ -1,0 +1,535 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/page/common/easyui_head.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<base href="<%=basePath%>"> 
+<title></title>
+<link href="css/default.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="css/themes/icon.css">
+<script type='text/javascript' src='<%=basePath%>js/common.js'></script>
+<script type='text/javascript' src='<%=basePath%>js/checkUtils.js'></script>
+</head>
+<body>
+<!--内容-->
+<div id="div_tbSysrUser_list" class="container">
+	<div class="page-toolbar clearfix">
+		<ul class="page-toolbar-list">
+			<li><a href="javascript:;" id="add_btn"><i class="icon-add"></i>新增</a></li>
+		</ul>
+	</div>
+	<article id="content" class="content">
+		<div class="content-body">
+			<!--搜索栏开始-->
+			<div class="search-panel toggle-panel">
+				<div class="panel-header" data-role="toggle-handle">
+					<h2 class="panel-title">查询条件</h2>
+				</div>
+				<div class="search-panel-content">
+					<form id="searchForm" name="searchForm" method="post" >
+						<div class="search-panel-bd">
+							<table class="search-table">
+									 <tr>
+										<th class="wd-20"><label>登录名称</label></th>
+										<td>
+											<input type="text"  name="search_user_code"  data-options="required:true"  style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE" />
+										</td>
+										<th class="wd-20"><label>用户姓名</label></th>
+										<td>
+											<input type="text"  name="search_user_name"  data-options="required:true"  style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE" />
+										</td>
+										<th class="wd-20"><label>手机号</label></th>
+										<td>
+											<input type="text"  name="search_mobile"  data-options="required:true"  style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE" />
+										</td>
+									</tr>
+									 <tr>
+									 	<th class="wd-20"><label>电子邮箱</label></th>
+										<td>
+											<input type="text"  name="search_email"  data-options="required:true"  style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE" />
+										</td>
+										<!-- <th class="wd-20"><label>每次登录密码错误次数</label></th>
+										<td>
+											<input type="text"  name="search_pass_error_num"  data-options="required:true"  style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE" />
+										</td>
+										 -->
+										<th class="wd-20"><label>用户状态</label></th>
+										<td>
+												<select name="search_user_state"  class="easyui-combobox" editable="false" style="color:black;width:180px;height:30px;border:solid 1px #B2DFEE">
+														<option value="0">正常</option>
+														<option value="1">密码锁定</option>
+														<option value="2">无效</option>
+												</select>
+										</td>
+									 </tr>
+							</table>
+						</div>
+						<div class="search-btn-area">
+							<input id="search_btn" type="button" value="查 询" />
+							<input id="clear_btn" type="button" value="清 除" />
+						</div>
+					</form>
+				</div>
+			</div>
+			<!--搜索栏结束-->
+			
+			<!--搜索结果开始-->
+			<div class="result-content">
+				<table  id="dg_tbSysrUser" class="easyui-datagrid" title="员工列表" style="width:auto;height:300px"
+					data-options="rownumbers:false,singleSelect:true,collapsible:true,sortName:'',sortOrder:'desc',pagination:'true',url:'<%=path%>/search_tbSysrUser_getListData.do',method:'post',onLoadSuccess:function(dataObj){redirectToLogin(dataObj);}">
+					<thead>
+						<tr>
+						 	<th data-options="field:'detail',width:50,align:'center'">明细</th>
+							<th data-options="field:'edit',width:50,align:'center'">编辑</th>
+							<th data-options="field:'resetpass',width:60,align:'center'">密码重置</th>
+                            <th data-options="field:'allot',width:60,align:'center'">角色配置</th>
+							<th data-options="field:'user_name',width:120,sortable:'true',align:'right'">用户姓名</th>
+							<th data-options="field:'user_code',width:120,sortable:'true',align:'right'">登录名称</th>
+							<th data-options="field:'mobile',width:120,sortable:'true',align:'right'">手机号</th>
+							<th data-options="field:'email',width:120,sortable:'true',align:'right'">电子邮箱</th>
+							<th data-options="field:'last_login_time',width:120,sortable:'true',align:'right'">上次登录时间</th>
+							<th data-options="field:'login_count',width:120,sortable:'true',align:'right'">登录次数</th>
+							<th data-options="field:'pass_error_num',width:120,sortable:'true',align:'right'">每次登录密码错误次数</th>
+							<th data-options="field:'user_state',width:120,sortable:'true',align:'right'">用户状态</th>
+							<th data-options="field:'init_pass_update',width:120,sortable:'true',align:'right'">初始密码是否修改</th>
+							<th data-options="field:'create_pass_time',width:120,sortable:'true',align:'right'">密码创建时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<!--搜索栏结果end-->
+		</div>
+	</article>
+</div>
+
+<script>
+var tbSysrUser_list ={};
+var forwardPath = '<%=path%>';
+jQuery(function($){
+	var path = '<%=path%>';
+    //定义一览页面查询的参数(JSON格式)
+    tbSysrUser_list.buildJsonQueryParams = function(){
+		  	var searchContent =	{
+		  		//标准查询部分
+			 	pageNumber:$('div#div_tbSysrUser_list #dg_tbSysrUser').datagrid('options').pageNumber,
+		  		//页面查询框部分
+					sysr_user_id :$("input[name='search_sysr_user_id']").val(), 
+					user_code :$("input[name='search_user_code']").val(), 
+					user_name :$("input[name='search_user_name']").val(), 
+					password :$("input[name='search_password']").val(), 
+					mobile :$("input[name='search_mobile']").val(), 
+					email :$("input[name='search_email']").val(), 
+					last_login_time :$("input[name='search_last_login_time']").val(), 
+					login_count :$("input[name='search_login_count']").val(), 
+					pass_error_num :$("input[name='search_pass_error_num']").val(), 
+					user_state :$("input[name='search_user_state']").val(), 
+					init_pass_update :$("input[name='search_init_pass_update']").val(), 
+					create_pass_time :$("input[name='search_create_pass_time']").val(), 
+					netno :$("input[name='search_netno']").val(), 
+					createtime :$("input[name='search_createtime']").val(), 
+					updatetime :$("input[name='search_updatetime']").val(), 
+					create_user_id :$("input[name='search_create_user_id']").val(), 
+					update_user_id :$("input[name='search_update_user_id']").val(), 
+		    };
+			var searchContentStr  =JSON.stringify(searchContent);
+			//传到到后台的URL 必须先编码化
+			return encodeURI(searchContentStr);
+	 };
+	 
+	//定义新增信息的参数(JSON格式)
+    tbSysrUser_list.buildJsonAddParams = function(){
+    		var pswd = $("input[name='tbSysrUserDto.password']").val();
+				pswd = hex_md5(pswd);
+		  	var addContent =	{
+		  		//页面输入框部分
+					sysr_user_id :$("input[name='tbSysrUserDto.sysr_user_id']").val(), 
+					user_code :$("input[name='tbSysrUserDto.user_code']").val(), 
+					user_name :$("input[name='tbSysrUserDto.user_name']").val(), 
+					password :pswd, 
+					mobile :$("input[name='tbSysrUserDto.mobile']").val(), 
+					email :$("input[name='tbSysrUserDto.email']").val(), 
+					last_login_time :$("input[name='tbSysrUserDto.last_login_time']").val(), 
+					login_count :$("input[name='tbSysrUserDto.login_count']").val(), 
+					pass_error_num :$("input[name='tbSysrUserDto.pass_error_num']").val(), 
+					user_state :$("input[name='tbSysrUserDto.user_state']").val(), 
+					init_pass_update :$("input[name='tbSysrUserDto.init_pass_update']").val(), 
+					create_pass_time :$("input[name='tbSysrUserDto.create_pass_time']").val(), 
+					netno :$("input[name='tbSysrUserDto.netno']").val(), 
+					createtime :$("input[name='tbSysrUserDto.createtime']").val(), 
+					updatetime :$("input[name='tbSysrUserDto.updatetime']").val(), 
+					create_user_id :$("input[name='tbSysrUserDto.create_user_id']").val(), 
+					update_user_id :$("input[name='tbSysrUserDto.update_user_id']").val(), 
+		    };
+			var addContentStr  =JSON.stringify(addContent);
+			//传到到后台的URL 必须先编码化
+			return encodeURI(addContentStr);
+	 };
+	
+	//重新按照条件刷新查询一览内容
+	$('div#div_tbSysrUser_list #search_btn').click(function(){
+		var searchContentStr = tbSysrUser_list.buildJsonQueryParams();		
+		var url = path+"/search_tbSysrUser_getListData.do?searchContentStr="+searchContentStr; 
+		//重新赋值url 属性
+        $("#dg_tbSysrUser").datagrid("options").url=url;
+        $("#dg_tbSysrUser").datagrid("reload"); 
+	});
+	
+	//重置查询条件并刷新内容
+	$('div#div_tbSysrUser_list #clear_btn').click(function(){
+		//清空查询条件
+			$("input[name='search_sysr_user_id']").val("");
+			$("input[name='search_user_code']").val("");
+			$("input[name='search_user_name']").val("");
+			$("input[name='search_password']").val("");
+			$("input[name='search_mobile']").val("");
+			$("input[name='search_email']").val("");
+			$("input[name='search_last_login_time']").val("");
+			$("input[name='search_login_count']").val("");
+			$("input[name='search_pass_error_num']").val("");
+			$("input[name='search_uset_state']").val("");
+			$("input[name='search_init_pass_update']").val("");
+			$("input[name='search_create_pass_time']").val("");
+			$("input[name='search_netno']").val("");
+			$("input[name='search_createtime']").val("");
+			$("input[name='search_updatetime']").val("");
+			$("input[name='search_create_user_id']").val("");
+			$("input[name='search_update_user_id']").val("");
+		var form = $(searchForm);
+	    form.find("select.easyui-combobox").combobox("setValue","");
+	    form.find("input.easyui-datebox").datebox("clear");
+	    form.find(":input[name]").not(":hidden").val("");
+		var searchContentStr = tbSysrUser_list.buildQueryParams();
+		var url = path+"/search_tbSysrUser_getListData.do?searchContentStr="+searchContentStr; 
+	    $("#dg_tbSysrUser").datagrid("options").url=url;
+	    $("#dg_tbSysrUser").datagrid("reload"); 
+	});
+	
+	/*
+	 * 点击新增按钮打开新增信息弹框
+	 */
+	$('div#div_tbSysrUser_list #add_btn').click(function(){
+		var add_form_id ='#addTbSysrUserFrom';
+		$('<div id="dialog_holder"></div>').dialog({
+		    title: '用户新增',
+		    width: 800,
+		    height: 250,
+		    href: path+'/page/authority/tbSysrUser/addTbSysrUserPage.jsp',
+		    modal: true,
+		    method: "POST",
+			onClose: function(){
+				$(this).dialog("destroy");
+			},
+		    buttons: [{
+		    	text: "保存",
+		    	handler: function(){
+		    	
+		    		//validate and sbumit
+				    if($(add_form_id).form("validate")==true){
+
+// 				    var reg1 =/^[a-zA-Z0-9_]+$$/;
+// 				    var user_code=$("input[name='tbSysrUserDto.user_code']").val();
+// 				    if(!reg1.test(user_code)){
+// 				    	$.messager.alert("提示信息","登录名称只能为字母、数字、下划线,请重新输入!");
+// 				    	return false;			    		
+// 				    }
+// 				    var reg2=/^[\u4E00-\u9FFF]+$/;
+// 		            var username=$("input[name='tbSysrUserDto.user_name']").val();		           
+// 		            if(!reg2.test(username)){
+// 		           		$.messager.alert("提示信息","用户姓名只能为中文,请重新输入!");
+// 				    	return false;	
+// 		            }
+					
+					var reg1 = /^[a-zA-Z0-9_]+$$/;
+		            var user_code=$("input[name='tbSysrUserDto.user_code']").val();
+		            if(!reg1.test(user_code)){
+ 				    	$.messager.alert("提示信息","登录名称只能为字母、数字、下划线,请重新输入!");
+				    	return false;			    		
+				    }
+		            
+					var username=$("input[name='tbSysrUserDto.user_name']").val();	
+					if(user_code.trim().length == 0 ){
+						$.messager.alert("提示信息","请输入登录名称信息!");
+					}
+		            if(username.trim().length == 0 ){
+						$.messager.alert("提示信息","请输入员工名称信息!");
+						return false ; 
+					}
+		            
+				    var password=$("input[name='tbSysrUserDto.password']").val();
+				    var password1=$("input[name='tbSysrUserDto.password2']").val();
+				   	var reg3=/^[\u4E00-\u9FFF]+$/;
+		            //var password=$("input[name='tbSysrUserDto.user_name']").val();		           
+		            if(reg3.test(password)){
+		           		$.messager.alert("提示信息","用户密码不能为中文,请重新输入!");
+				    	return false;	
+		            }
+		             if(reg3.test(password1)){
+		           		$.messager.alert("提示信息","用户密码不能为中文,请重新输入!");
+				    	return false;	
+		            }
+				    if(password!=password1){
+				    	$.messager.alert("提示信息","两次输入的密码不相同,请确认再输入!");
+				    	return false;
+				    }
+				     var mobphone=$("input[name='tbSysrUserDto.mobile']").val();
+				     var reg3=/^[0-9]*$/;
+		             if(!reg3.test(mobphone)){
+		            	$.messager.alert("错误提示","客户手机号码只能为数字,请重新输入!");
+				    	return false;
+		             }else if(mobphone.length!=11){
+		            	$.messager.alert("错误提示","客户手机号码，请输入11位!");
+				    	return false;
+		             }
+		  			 $.messager.progress(); 
+					 acjAjax({
+							 type:'POST',
+							 cache:false,
+					 		 async: false,
+						     url:'<%=path%>'+"/add_TbSysrUser.do?addContentStr="+tbSysrUser_list.buildJsonAddParams(),
+							 success:function(data){
+							        $.messager.progress('close');
+									data = $.parseJSON(data);
+									if(data.error){
+									    $.messager.alert("操作提示",data.message);
+									    return;
+									}else{
+									    $.messager.alert("操作提示",data.message);
+										$('#dialog_holder').dialog('close');
+								        $("#dg_tbSysrUser").datagrid("reload"); 
+									} 
+							}
+						});
+					};   
+		    	},id:'add_save'
+		    },{text: "退出",
+		    	handler: function(e){
+		    		$("#dialog_holder").dialog("destroy");
+			 		$("#dialog_holder").dialog('close');
+		    	},id:'add_cancel'}
+		    ]
+		});
+	});
+	//定义新增信息的参数(JSON格式)
+    tbSysrUser_list.buildJsonEditParams = function(){
+		  	var editContent =	{
+		  		//页面输入框部分
+					sysr_user_id :$("input[name='tbSysrUserDto.sysr_user_id']").val(), 
+					user_code :$("input[name='tbSysrUserDto.user_code']").val(), 
+					user_name :$("input[name='tbSysrUserDto.user_name']").val(), 
+					mobile :$("input[name='tbSysrUserDto.mobile']").val(), 
+					email :$("input[name='tbSysrUserDto.email']").val(), 
+					last_login_time :$("input[name='tbSysrUserDto.last_login_time']").val(), 
+					login_count :$("input[name='tbSysrUserDto.login_count']").val(), 
+					pass_error_num :$("input[name='tbSysrUserDto.pass_error_num']").val(), 
+					user_state :$("input[name='tbSysrUserDto.user_state']").val(), 
+					init_pass_update :$("input[name='tbSysrUserDto.init_pass_update']").val(), 
+					create_pass_time :$("input[name='tbSysrUserDto.create_pass_time']").val(), 
+					netno :$("input[name='tbSysrUserDto.netno']").val(), 
+					createtime :$("input[name='tbSysrUserDto.createtime']").val(), 
+					updatetime :$("input[name='tbSysrUserDto.updatetime']").val(), 
+					create_user_id :$("input[name='tbSysrUserDto.create_user_id']").val(), 
+					update_user_id :$("input[name='tbSysrUserDto.update_user_id']").val(), 
+		    };
+			var editContentStr  =JSON.stringify(editContent);
+			//传到到后台的URL 必须先编码化
+			return encodeURI(editContentStr);
+	 };
+	/*
+	 * 点击编辑按钮弹出编辑信息框
+	 pkid:主键
+	 */
+	tbSysrUser_list.updateFormSubmit = function(pkid){
+	    var edit_form_id ='#editTbSysrUserFrom';
+		$('<div id="dialog_holder"></div>').dialog({
+		    title: '用户信息编辑',
+		    width: 800,
+		    height: 250,
+		    href: path+"/page/authority/tbSysrUser/editTbSysrUserPage.jsp?pkid="+pkid,
+		    modal: true,
+		    method: "POST",
+		    async: false,
+			onClose: function(){
+				$(this).dialog("destroy");
+			},
+		    buttons: [{
+		    	text: "保 存",
+		    	handler: function(e){
+		    		//验证不能为空的信息是否都填充
+				    if($(edit_form_id).form("validate")==true){
+				    
+// 				    	 var reg1 =/^[a-zA-Z0-9_]+$$/;
+// 					    var user_code=$("input[name='tbSysrUserDto.user_code']").val();
+// 					    if(!reg1.test(user_code)){
+// 					    	$.messager.alert("提示信息","用户名只能为字母、数字、下划线,请重新输入!");
+// 					    	return false;			    		
+// 					    }
+// 					    var reg2=/^[\u4E00-\u9FFF]+$/;
+// 			            var username=$("input[name='tbSysrUserDto.user_name']").val();		           
+// 			            if(!reg2.test(username)){
+// 			           		$.messager.alert("提示信息","用户姓名只能为中文,请重新输入!");
+// 					    	return false;	
+// 			            }
+						var user_code=$("input[name='tbSysrUserDto.user_code']").val();
+						var username=$("input[name='tbSysrUserDto.user_name']").val();	
+						if(user_code.trim().length == 0 ){
+							$.messager.alert("提示信息","请输入登录名称信息!");
+						}
+			            if(username.trim().length == 0 ){
+							$.messager.alert("提示信息","请输入员工名称信息!");
+							return false ; 
+						}
+			            var mobphone=$("input[name='tbSysrUserDto.mobile']").val();
+				     	var reg3=/^[0-9]*$/;
+			            if(!reg3.test(mobphone)){
+			            	$.messager.alert("错误提示","客户手机号码只能为数字,请重新输入!");
+					    	return false;
+			            }else if(mobphone.length!=11){
+			            	$.messager.alert("错误提示","客户手机号码，请输入11位!");
+					    	return false;
+			            }
+					   	$.messager.progress(); 
+			      		acjAjax({
+							type:'POST',
+							cache:false,
+					 		async: false,
+						    url:'<%=path%>'+"/edit_TbSysrUser.do?editContentStr="+tbSysrUser_list.buildJsonEditParams(),
+							success:function(data){
+							        $.messager.progress('close');
+									data = $.parseJSON(data);
+									if(data.error){
+									    $.messager.alert("操作提示",data.message);
+									    return;
+									}else{
+									    $.messager.alert("操作提示",data.message);
+										$('#dialog_holder').dialog('close');
+								        $("#dg_tbSysrUser").datagrid("reload"); 
+									} 
+							}
+						}); 
+					};    
+		    	},id:'edit_save'
+		    },{text:'退出',
+				    handler:function(e){
+				      $("#dialog_holder").dialog("destroy");
+					  $("#dialog_holder").dialog('close');
+					},id:'add_cancel'
+			},{ text: "删  除",
+				    handler: function(e){
+				    	var del = confirm("确定删除吗?");
+				    	if(!del){
+					       return false;
+					    }
+		     			acjAjax({
+						 		type:'POST',
+						 		url:path+"/del_TbSysrUser.do?pkid="+pkid,    
+						 		success:function(data){
+						 		 	data = $.parseJSON(data);
+						 		 	if(data.error){
+									    $.messager.alert("操作提示",data.message);
+									    return;
+						 		 	}else{
+									    $.messager.alert("操作提示",data.message);
+							 			$("#dialog_holder").dialog("destroy");
+							 		    $("#dialog_holder").dialog("close");
+							 		    $("#dg_tbSysrUser").datagrid("reload"); 
+						 		 	}		 		 		
+						 		}
+						 	});
+						   } ,
+						   id:'del_cancel'}
+						   ]
+						});
+	} ;
+	
+	//详细
+	tbSysrUser_list.detailFormSubmit = function(pkid){
+		$('<div id="dialog_holder"></div>').dialog({
+		    title: '用户详细信息',
+		    width: 800,
+		    height: 350,
+		    href: path+"/page/authority/tbSysrUser/detailTbSysrUserPage.jsp?pkid="+pkid, 
+		    modal: true,
+		    method: "POST",
+			onClose: function(){
+				$(this).dialog("destroy");
+			},
+		    success:function(data){
+				if(data.error){
+				    $.messager.alert("操作提示",data.message);
+				    return;
+				}else{
+				    $.messager.alert("操作提示",data.message);
+					$('#dialog_holder').dialog('close');
+			        $("#dg_tbSysrUser").datagrid("reload"); 
+				}
+		     },buttons: [{
+		    	text: "关闭",
+		    	handler: function(){
+		    		$("#dialog_holder").dialog('close');
+		    	}
+		    }]
+		});
+	};
+	 
+	tbSysrUser_list.resetPassFormSubmit = function( pkid ){
+		$.messager.confirm("确认信息","您确定要重置该用户的登录密码吗？",function( ret ){
+			if( ret ){
+				$.post("resetTbSysUserPass.do",
+					{
+						"pkid": pkid
+					},
+					function(data){
+						data = JSON.parse(data);
+						if(data.status){
+							$.messager.alert("提示信息","密码重置成功","info");
+						}else{
+							$.messager.alert("提示信息",data.message,"info");
+				 			$("#dialog_holder").dialog("destroy");
+				 		    $("#dialog_holder").dialog("close");
+				 		    $("#dg_tbSysrUser").datagrid("reload"); 
+						}
+					}
+				);
+			}
+		})
+	};
+	
+	
+	//用户分配角色
+    tbSysrUser_list.allotFormSubmit = function(pkid,user_code,user_name){
+        $('<div id="dialog_holder"></div>').dialog({
+            title: '角色分配',
+            width: 800,
+            height: 500,
+            href: path+"/page/authority/tbSysrUser/configrole/addTUserRoleRelaPage.jsp",
+            modal: true,
+            method: "POST",
+            params:{pkid:pkid},
+            onLoad: function(){
+				$(this).find("#div_userRole_list #pkid").val(pkid);
+				$(this).find("#div_userRole_list #user_code").val(user_code);
+				$(this).find("#div_userRole_list #user_name").val(user_name);
+				tConfig_list.trigger();
+			},
+            onClose: function(){
+                $(this).dialog("destroy");
+            },
+            buttons: [{
+                text: "关闭",
+                handler: function(e){
+                    $("#dialog_holder").dialog("close");
+                }
+            }]
+        });
+    }
+	
+	
+	
+	
+});
+
+</script>
+<%@ include file="/page/common/footer.jsp"%>
+</body>
+</html>

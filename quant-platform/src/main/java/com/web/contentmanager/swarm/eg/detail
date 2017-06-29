@@ -1,0 +1,67 @@
+{
+  "IsSuccess": true,
+  "Data": {
+    "ID": "8ahqa0k35ht5thexx4jhmfomv",
+    "Version": {
+      "Index": 96331
+    },
+    "CreatedAt": "2017-04-10T08:53:08.986640059Z",
+    "UpdatedAt": "2017-04-10T08:53:08.987269855Z",
+    "Spec": {
+      "Name": "123456",
+      "Labels": {},
+      "TaskTemplate": {
+        "ContainerSpec": {
+          "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+          "Mounts": [
+            {
+              "Type": "bind",
+              "Source": "/user/123456",
+              "Target": "/tmp",
+              "BindOptions": {
+                "Propagation": "rprivate"
+              }
+            }
+          ]
+        },
+        "Placement": {},
+        "ForceUpdate": 0
+      },
+      "Mode": {
+        "Global": {}
+      },
+      "EndpointSpec": {
+        "Mode": "dnsrr",
+        "Ports": [
+          {
+            "Protocol": "tcp",
+            "TargetPort": 10001,
+            "PublishedPort": 10001,
+            "PublishMode": "host"
+          }
+        ]
+      }
+    },
+    "Endpoint": {
+      "Spec": {
+        "Mode": "dnsrr",
+        "Ports": [
+          {
+            "Protocol": "tcp",
+            "TargetPort": 10001,
+            "PublishedPort": 10001,
+            "PublishMode": "host"
+          }
+        ]
+      },
+      "Ports": [
+        {
+          "Protocol": "tcp",
+          "TargetPort": 10001,
+          "PublishedPort": 10001,
+          "PublishMode": "host"
+        }
+      ]
+    }
+  }
+}

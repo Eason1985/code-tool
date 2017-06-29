@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration  
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">  
+<configuration>  
+   
+    <properties resource="jdbc-test.properties"></properties>  
+<!--     <typeAliases>   -->
+<!--        <package name="com.tiantian.mybatis.model"/>   -->
+<!--     </typeAliases>   -->
+<!--     <environments default="development">   -->
+<!--        <environment id="development">   -->
+<!--            <transactionManager type="JDBC" />   -->
+<!--            <dataSource type="POOLED">   -->
+<!--               <property name="driver" value="${jdbc.driver}" />   -->
+<!--               <property name="url" value="${jdbc.url}" />   -->
+<!--               <property name="username" value="${jdbc.username}" />   -->
+<!--               <property name="password" value="${jdbc.password}" />   -->
+<!--            </dataSource>   -->
+<!--        </environment>   -->
+<!--     </environments>   -->
+	<environments default="development_">  
+       <environment id="development_">  
+           <transactionManager type="JDBC" />  
+           <dataSource type="POOLED">  
+              <property name="driver" value="${test.jdbc.driver_}" />  
+              <property name="url" value="${test.jdbc.url_}" />  
+              <property name="username" value="${test.jdbc.username_}" />  
+              <property name="password" value="${test.jdbc.password_}" />  
+           </dataSource>  
+       </environment>  
+    </environments>  
+    <mappers>  
+       <mapper class="com.absmybatis.dao.mapper.DefaultDtoBaseMapper"/>  
+    </mappers>  
+</configuration> 

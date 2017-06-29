@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="false">
+
+	<bean id="propertyConfigurer"    
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+      	 	<property name="locations"> 
+			<list>
+					<value>classpath*:/properties/jdbc.properties</value>	
+					<value>classpath*:/properties/system.properties</value>	
+			</list>
+		</property>   
+    </bean>  
+	
+
+    <!--2. add by szy 读取日志设定 -->
+	<bean id="log4jInitialization"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+				<!-- 
+				 <value>file:${resources.config.crm_ws.path}log4j.xml</value>
+			    -->
+			    <value>classpath:properties/log4j.properties</value>
+				 <!--
+				 <value>file:D:\\Users\\hercules.chen\\Workspaces\\MyEclipse 8.5\\ldbank_core\\resources\\config_core_other\\log4j.xml</value>
+				  -->
+			</list>
+		</property>
+	</bean>
+</beans>

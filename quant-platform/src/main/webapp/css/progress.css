@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+.loading-mask{
+		        position:absolute;
+		        left:0;
+		        top:0;
+		        z-index:20000;
+		        background-color:#999;
+		        filter:alpha(opacity=20);  
+			    -moz-opacity:0.2;  
+			    -khtml-opacity: 0.2;  
+			    opacity: 0.2;  
+			    overflow:visible;
+			    
+		    }
+			
+	.loading{
+				padding:2px;
+				z-index:20001;
+				height:100px;
+				width: 100px;
+			}
+			
+.first{
+                width: 100px;
+                height:50px;
+                border:2px #333 solid;
+                margin:5px;
+				float:left;
+				color:#333;
+        }
+.second{
+                width:100px;
+                height:50px;
+                border:1px #333 solid;
+                margin:5px;
+				float:left;
+        }
+.third{
+                width:100px;
+                height:50px;
+                border:1px #333 solid;
+                margin:5px;
+				float:left;
+        }			

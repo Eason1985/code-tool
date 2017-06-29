@@ -1,0 +1,152 @@
+{
+  "IsSuccess": true,
+  "Data": {
+    "Length": 3,
+    "Result": [
+      {
+        "ID": "1f2wobdauxwewtveaa6sunvf6",
+        "Version": {
+          "Index": 96420
+        },
+        "CreatedAt": "2017-04-10T10:52:32.431602342Z",
+        "UpdatedAt": "2017-04-10T10:52:32.983420088Z",
+        "Labels": {},
+        "Spec": {
+          "ContainerSpec": {
+            "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+            "Mounts": [
+              {
+                "Type": "bind",
+                "Source": "/user/123456",
+                "Target": "/tmp",
+                "BindOptions": {
+                  "Propagation": "rprivate"
+                }
+              }
+            ]
+          },
+          "Placement": {},
+          "ForceUpdate": 0
+        },
+        "ServiceID": "kiaou7ktjvssxnymtgvmlab3v",
+        "NodeID": "kxdxq6esrk90p86iw8nu2lpqb",
+        "Status": {
+          "Timestamp": "2017-04-10T10:52:32.897285237Z",
+          "State": "running",
+          "Message": "started",
+          "ContainerStatus": {
+            "ContainerID": "78aaa04b81dd5919f654d5dd31acf82678550bad6b61b31a87ce7249d7d62846",
+            "PID": 21260
+          },
+          "PortStatus": {
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8888,
+                "PublishedPort": 8888,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "DesiredState": "running"
+      },
+      {
+        "ID": "iqes2vhh82tc1og3x7o5fa65f",
+        "Version": {
+          "Index": 96420
+        },
+        "CreatedAt": "2017-04-10T10:52:32.431431483Z",
+        "UpdatedAt": "2017-04-10T10:52:32.983565584Z",
+        "Labels": {},
+        "Spec": {
+          "ContainerSpec": {
+            "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+            "Mounts": [
+              {
+                "Type": "bind",
+                "Source": "/user/123456",
+                "Target": "/tmp",
+                "BindOptions": {
+                  "Propagation": "rprivate"
+                }
+              }
+            ]
+          },
+          "Placement": {},
+          "ForceUpdate": 0
+        },
+        "ServiceID": "kiaou7ktjvssxnymtgvmlab3v",
+        "NodeID": "pc0rogd4g50y47om3cjqe1926",
+        "Status": {
+          "Timestamp": "2017-04-10T10:52:32.919802371Z",
+          "State": "running",
+          "Message": "started",
+          "ContainerStatus": {
+            "ContainerID": "765ce6db64bdda301ec28d0c564e6a4ffd84769f25a1ab23c64b348b8338585d",
+            "PID": 12843
+          },
+          "PortStatus": {
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8888,
+                "PublishedPort": 8888,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "DesiredState": "running"
+      },
+      {
+        "ID": "ua5x1dvrj8dtnckrkyp0ep4bt",
+        "Version": {
+          "Index": 96419
+        },
+        "CreatedAt": "2017-04-10T10:52:32.431683867Z",
+        "UpdatedAt": "2017-04-10T10:52:32.882706129Z",
+        "Labels": {},
+        "Spec": {
+          "ContainerSpec": {
+            "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+            "Mounts": [
+              {
+                "Type": "bind",
+                "Source": "/user/123456",
+                "Target": "/tmp",
+                "BindOptions": {
+                  "Propagation": "rprivate"
+                }
+              }
+            ]
+          },
+          "Placement": {},
+          "ForceUpdate": 0
+        },
+        "ServiceID": "kiaou7ktjvssxnymtgvmlab3v",
+        "NodeID": "6fb4562vah40a8l0iqwmtrmpo",
+        "Status": {
+          "Timestamp": "2017-04-10T10:52:32.869030427Z",
+          "State": "running",
+          "Message": "started",
+          "ContainerStatus": {
+            "ContainerID": "2ba6a9eae8fb007525f642025ea0b67b471d54c6387b6415015aa508fb29da54",
+            "PID": 32621
+          },
+          "PortStatus": {
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8888,
+                "PublishedPort": 8888,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "DesiredState": "running"
+      }
+    ]
+  }
+}

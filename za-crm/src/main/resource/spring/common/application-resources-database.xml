@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+	default-lazy-init="true">
+	
+	<!--1. add by jason.shu 本系统数据源定义-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="initialSize">
+			<value>${jdbc.initialSize}</value>
+		</property>
+		<property name="maxActive">
+			<value>${jdbc.maxActive}</value>
+		</property>
+		<property name="maxIdle">
+			<value>${jdbc.maxIdle}</value>
+		</property>
+		<property name="defaultAutoCommit">
+			<value>${jdbc.defaultAutoCommit}</value>
+		</property>
+		<property name="removeAbandoned">
+			<value>${jdbc.removeAbandoned}</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>${jdbc.removeAbandonedTimeout}</value>
+		</property>
+		<property name="maxWait">
+			<value>${jdbc.maxWait}</value>
+		</property>
+		<property name="logAbandoned" value="true" />
+		<property name="validationQuery" value="select 1 from dual" />
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="15000" />
+		<property name="numTestsPerEvictionRun" value="10" />
+		<property name="minEvictableIdleTimeMillis" value="600000" />
+	</bean>
+ 
+	<!-- myBatis文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 定义Mapper  -->
+	 <bean id="springMapperFactory" class="org.mybatis.spring.mapper.MapperFactoryBean">   
+     	<property name="mapperInterface" value="com.absmybatis.dao.mapper.DefaultDtoBaseMapper" />   
+    	 <property name="sqlSessionFactory" ref="sqlSessionFactory" />   
+     </bean>  
+     
+     <!-- 会扫描com.szy.entity.mapper下的所有接口，然后创建各自接口的动态代理类。 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.web.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+     
+     
+	<!--3. add by szy 事务管理配 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+	
+    <!--4. 自动事务扫描   -->
+	<tx:annotation-driven transaction-manager="transactionManager"  />
+	 
+	
+</beans>

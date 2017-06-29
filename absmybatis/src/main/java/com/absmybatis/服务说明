@@ -1,0 +1,4 @@
+ * 如果数据库中是DATE类型，查询时，mybatis查询出来的值的类型为：class java.sql.Timestamp
+ * 如果数据库中是TIMSTAMP(6)类型，查询时，mybatis查询出来的值的类型为：class oracle.sql.TIMESTAMP
+ * 
+ * 无论数据库中是什么日期类型，在实体类中，全部将其转换为java.sql.Timestamp类型。

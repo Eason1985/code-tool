@@ -1,0 +1,66 @@
+{
+  "IsSuccess": true,
+  "Data": {
+    "ID": "pc0rogd4g50y47om3cjqe1926",
+    "Version": {
+      "Index": 11
+    },
+    "CreatedAt": "2017-03-02T06:04:24.427371345Z",
+    "UpdatedAt": "2017-03-02T06:04:25.131171384Z",
+    "Spec": {
+      "Labels": {},
+      "Role": "manager",
+      "Availability": "active"
+    },
+    "Description": {
+      "Hostname": "iZbp1etps9kxlmlsy4q32pZ",
+      "Platform": {
+        "Architecture": "x86_64",
+        "OS": "linux"
+      },
+      "Resources": {
+        "NanoCPUs": 4000000000,
+        "MemoryBytes": 8371060736
+      },
+      "Engine": {
+        "EngineVersion": "1.12.6",
+        "Labels": {
+          "com.eason.bizcluster": "ops",
+          "com.eason.env": "test",
+          "com.eason.publicnetwork": "false"
+        },
+        "Plugins": [
+          {
+            "Type": "Network",
+            "Name": "bridge"
+          },
+          {
+            "Type": "Network",
+            "Name": "host"
+          },
+          {
+            "Type": "Network",
+            "Name": "null"
+          },
+          {
+            "Type": "Network",
+            "Name": "overlay"
+          },
+          {
+            "Type": "Volume",
+            "Name": "local"
+          }
+        ]
+      }
+    },
+    "Status": {
+      "State": "ready",
+      "Addr": "10.253.107.177"
+    },
+    "ManagerStatus": {
+      "Leader": true,
+      "Reachability": "reachable",
+      "Addr": "10.253.107.177:3381"
+    }
+  }
+}

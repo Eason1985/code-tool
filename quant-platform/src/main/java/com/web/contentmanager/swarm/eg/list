@@ -1,0 +1,333 @@
+{
+  "IsSuccess": true,
+  "Data": {
+    "Length": 3,
+    "Result": [
+      {
+        "ID": "8ahqa0k35ht5thexx4jhmfomv",
+        "Version": {
+          "Index": 96331
+        },
+        "CreatedAt": "2017-04-10T08:53:08.986640059Z",
+        "UpdatedAt": "2017-04-10T08:53:08.987269855Z",
+        "Spec": {
+          "Name": "123456",
+          "Labels": {},
+          "TaskTemplate": {
+            "ContainerSpec": {
+              "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+              "Mounts": [
+                {
+                  "Type": "bind",
+                  "Source": "/user/123456",
+                  "Target": "/tmp",
+                  "BindOptions": {
+                    "Propagation": "rprivate"
+                  }
+                }
+              ]
+            },
+            "Placement": {},
+            "ForceUpdate": 0
+          },
+          "Mode": {
+            "Global": {}
+          },
+          "EndpointSpec": {
+            "Mode": "dnsrr",
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 10001,
+                "PublishedPort": 10001,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "Endpoint": {
+          "Spec": {
+            "Mode": "dnsrr",
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 10001,
+                "PublishedPort": 10001,
+                "PublishMode": "host"
+              }
+            ]
+          },
+          "Ports": [
+            {
+              "Protocol": "tcp",
+              "TargetPort": 10001,
+              "PublishedPort": 10001,
+              "PublishMode": "host"
+            }
+          ]
+        }
+      },
+      {
+        "ID": "tise8l0n6j4vx7mnygy25vgwr",
+        "Version": {
+          "Index": 139
+        },
+        "CreatedAt": "2017-03-02T06:24:58.382928097Z",
+        "UpdatedAt": "2017-03-02T09:50:34.610490961Z",
+        "Spec": {
+          "Name": "zis_ops_za-resty-admin",
+          "Labels": {},
+          "TaskTemplate": {
+            "ContainerSpec": {
+              "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+              "Env": [
+                "JAVA_OPTS=-Xmx950m",
+                "corp=zainfo",
+                "DEPLOY_ENV=test",
+                "SERVICE_TAGS=zis_ops_za-resty-admin-/",
+                "SERVICE_NAME=zis_ops_za-resty-admin",
+                "SERVICE_CHECK_HTTP=/health",
+                "SERVICE_CHECK_INTERVAL=10s",
+                "SERVICE_CHECK_TIMEOUT=5s"
+              ],
+              "Mounts": [
+                {
+                  "Type": "bind",
+                  "Source": "/alidata1/admin/logs/za-resty-admin",
+                  "Target": "/alidata1/admin/za-resty-admin/logs",
+                  "BindOptions": {
+                    "Propagation": "rprivate"
+                  }
+                }
+              ],
+              "NetworkMode": "default"
+            },
+            "Resources": {
+              "Limits": {
+                "MemoryBytes": 1073741824
+              },
+              "Reservations": {}
+            },
+            "RestartPolicy": {
+              "Condition": "on-failure",
+              "Delay": 1000000000,
+              "MaxAttempts": 5
+            },
+            "Placement": {
+              "Constraints": [
+                "engine.labels.com.eason.bizcluster == ops"
+              ]
+            },
+            "ForceUpdate": 0
+          },
+          "Mode": {
+            "Replicated": {
+              "Replicas": 1
+            }
+          },
+          "EndpointSpec": {
+            "Mode": "dnsrr",
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8080,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "PreviousSpec": {
+          "Name": "zis_ops_za-resty-admin",
+          "Labels": {},
+          "TaskTemplate": {
+            "ContainerSpec": {
+              "Image": "10.139.49.97:5000/zis_ops/za-resty-admin:0.1.9",
+              "Labels": {
+                "com.eason.keystone.service": "zis_ops_za-resty-admin_0.1.9",
+                "com.eason.keystone.serviceName": "zis_ops_za-resty-admin",
+                "com.eason.keystone.serviceTag": "0.1.9"
+              },
+              "Env": [
+                "JAVA_OPTS=-Xmx950m",
+                "corp=zainfo",
+                "DEPLOY_ENV=test",
+                "SERVICE_TAGS=zis_ops_za-resty-admin-/",
+                "SERVICE_NAME=zis_ops_za-resty-admin",
+                "SERVICE_CHECK_HTTP=/health",
+                "SERVICE_CHECK_INTERVAL=10s",
+                "SERVICE_CHECK_TIMEOUT=5s"
+              ],
+              "Mounts": [
+                {
+                  "Type": "bind",
+                  "Source": "/alidata1/admin/logs/za-resty-admin",
+                  "Target": "/alidata1/admin/za-resty-admin/logs",
+                  "BindOptions": {
+                    "Propagation": "rprivate"
+                  }
+                }
+              ],
+              "NetworkMode": "default"
+            },
+            "Resources": {
+              "Limits": {
+                "MemoryBytes": 1073741824
+              },
+              "Reservations": {}
+            },
+            "RestartPolicy": {
+              "Condition": "on-failure",
+              "Delay": 1000000000,
+              "MaxAttempts": 5
+            },
+            "Placement": {
+              "Constraints": [
+                "engine.labels.com.eason.bizcluster == ops"
+              ]
+            },
+            "ForceUpdate": 0
+          },
+          "Mode": {
+            "Replicated": {
+              "Replicas": 1
+            }
+          },
+          "EndpointSpec": {
+            "Mode": "dnsrr",
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8080,
+                "PublishMode": "host"
+              }
+            ]
+          }
+        },
+        "Endpoint": {
+          "Spec": {
+            "Mode": "dnsrr",
+            "Ports": [
+              {
+                "Protocol": "tcp",
+                "TargetPort": 8080,
+                "PublishMode": "host"
+              }
+            ]
+          },
+          "Ports": [
+            {
+              "Protocol": "tcp",
+              "TargetPort": 8080,
+              "PublishMode": "host"
+            }
+          ]
+        },
+        "UpdateStatus": {
+          "State": "completed",
+          "StartedAt": "2017-03-02T09:50:02.455640178Z",
+          "CompletedAt": "2017-03-02T09:50:34.610460166Z",
+          "Message": "update completed"
+        }
+      },
+      {
+        "ID": "uff5oohdigyvgki4aoir5nja3",
+        "Version": {
+          "Index": 71
+        },
+        "CreatedAt": "2017-03-02T07:17:05.459248955Z",
+        "UpdatedAt": "2017-03-02T07:20:33.92024286Z",
+        "Spec": {
+          "Name": "registrator",
+          "Labels": {},
+          "TaskTemplate": {
+            "ContainerSpec": {
+              "Image": "10.139.49.97:5000/cluster/registrator:1.0.0",
+              "Command": [
+                "/bin/registrator",
+                "consul://localhost:8500"
+              ],
+              "Env": [
+                "DEPLOY_ENV=test"
+              ],
+              "Mounts": [
+                {
+                  "Type": "bind",
+                  "Source": "/var/run/docker.sock",
+                  "Target": "/tmp/docker.sock",
+                  "BindOptions": {
+                    "Propagation": "rprivate"
+                  }
+                }
+              ],
+              "NetworkMode": "host"
+            },
+            "Resources": {
+              "Limits": {
+                "MemoryBytes": 67108864
+              },
+              "Reservations": {}
+            },
+            "RestartPolicy": {
+              "Condition": "any",
+              "Delay": 1000000000,
+              "MaxAttempts": 5
+            },
+            "ForceUpdate": 0
+          },
+          "Mode": {
+            "Global": {}
+          },
+          "EndpointSpec": {
+            "Mode": "dnsrr"
+          }
+        },
+        "PreviousSpec": {
+          "Name": "registrator",
+          "Labels": {},
+          "TaskTemplate": {
+            "ContainerSpec": {
+              "Image": "10.139.49.97:5000/cluster/registrator:1.0.0",
+              "Command": [
+                "consul://localhost:8500"
+              ],
+              "Env": [
+                "DEPLOY_ENV=test"
+              ],
+              "Mounts": [
+                {
+                  "Type": "bind",
+                  "Source": "/var/run/docker.sock",
+                  "Target": "/tmp/docker.sock",
+                  "BindOptions": {
+                    "Propagation": "rprivate"
+                  }
+                }
+              ],
+              "NetworkMode": "host"
+            },
+            "Resources": {
+              "Limits": {
+                "MemoryBytes": 67108864
+              }
+            },
+            "RestartPolicy": {
+              "Condition": "any",
+              "Delay": 1000000000,
+              "MaxAttempts": 5
+            },
+            "ForceUpdate": 0
+          },
+          "Mode": {
+            "Global": {}
+          },
+          "EndpointSpec": {
+            "Mode": "dnsrr"
+          }
+        },
+        "Endpoint": {
+          "Spec": {}
+        }
+      }
+    ]
+  }
+}

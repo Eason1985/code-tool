@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.mapper.tbSysrRelationRoleResource.TbSysrRelationRoleResourceMapper">
+   	<!--用于查询资源关系-->
+    <select id="select_tResSelfRelaList" 
+    	parameterType="java.util.HashMap" 
+    	resultType="java.util.HashMap">
+			SELECT 
+				tr.RELATION_RES_SELF_ID RES_RELATION_ID,
+				tr.PARENT_RES_ID PARENT_RES_ID,
+				tr.CHILD_RES_ID CHILD_RES_ID,
+				ts.RESOURCE_NAME RES_NAME,
+				ts.RESOURCE_ID RES_CODE,
+				ts.RESOURCE_ADDR RESOURCE_ADDR ,
+		      	case 
+		      		when ro.ROLE_ID is null 
+		      		then 'false' else 'true' end CHECKED    
+		      FROM TB_SYSR_RELATION_RES_SELF  tr
+		      LEFT JOIN TB_SYSR_RESOURCE ts on ts.resource_id = tr.CHILD_RES_ID
+		      LEFT JOIN ( 
+		           SELECT SYSR_ROLE_ID ROLE_ID,RESOURCE_ID 
+		           from TB_SYSR_RELATION_ROLE_RESOURCE 
+		           where SYSR_ROLE_ID = #{sysr_role_id}
+		       ) ro on ro.RESOURCE_ID = ts.resource_id 
+		      <!-- WHERE tr.netno = #{netno} -->
+		      <!-- START WITH  
+		       tr.CHILD_RES_ID =  
+		       	(
+		       		select p.child_res_id 
+		       		from tb_sysr_relation_res_self p 
+		       		where p.parent_res_id =  '0'  表示元节点
+		       	)
+		        CONNECT BY PRIOR tr.CHILD_RES_ID = tr.PARENT_RES_ID -->
+		        ORDER BY ts.resource_id asc
+	 
+	 </select>
+
+<!--根据用户ID获取资源-->
+	<select id="select_tResSelfRelaListByUserId" 
+    	parameterType="java.util.HashMap" 
+    	resultType="java.util.HashMap">
+			SELECT 
+				tr.RELATION_RES_SELF_ID RES_RELATION_ID,
+        tr.PARENT_RES_ID PARENT_RES_ID,
+        tr.CHILD_RES_ID CHILD_RES_ID,
+        ts.RESOURCE_NAME RES_NAME,
+        ts.RESOURCE_ID RES_CODE,
+        ts.RESOURCE_ADDR RESOURCE_ADDR ,
+        'true' CHECKED    
+          FROM TB_SYSR_RELATION_RES_SELF  tr
+          LEFT JOIN TB_SYSR_RESOURCE ts on ts.resource_id = tr.CHILD_RES_ID
+          WHERE 1=1 
+          <!-- and tr.netno = #{netno} -->
+          AND EXISTS (
+               SELECT SYSR_ROLE_ID ROLE_ID,RESOURCE_ID 
+               from TB_SYSR_RELATION_ROLE_RESOURCE p
+               where p.RESOURCE_ID = ts.resource_id
+                 and exists (
+                   select 1 from TB_SYSR_RELATION_USER_ROLE r 
+                   where p.SYSR_ROLE_ID = r.sysr_role_id
+                   and r.sysr_user_id = #{sysr_user_id}
+                )
+           )
+       
+		 ORDER BY tr.PARENT_RES_ID ,tr.PRIORITY
+	 
+	 </select>
+
+
+</mapper>
